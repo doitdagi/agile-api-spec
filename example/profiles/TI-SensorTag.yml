@@ -1,13 +1,13 @@
 Device:
-  ## Mandatory fields
-  # Protocol type
-  Protocol: BLE
-  Version: 1.0
+  #Mandatory fields
   Name: "CC2650 SensorTag"
   Address: "C4:BE:84:70:69:09"
   Description: "TI Sensor tag"
+  #Protocol type
+  Protocol: BLE
+  Version: 1.0
   Url: http://www.ti.com/product/cc2541
-  
+    
   ## Additional informations in Properties
   Properties:
     BaseUUID: F000XXXX-0451-4000-B000-000000000000
@@ -22,40 +22,197 @@ Device:
       Blocked: false
       Paried: false
       Trusted: true
-      Connected: false
-  
-  # Streams are groups of single data sources
+      Connected: false 
+      
+   # Streams are groups of single data sources
   Streams:
-      Name: "Temperature"
-      Id: "f000aa00-0451-4000-b000-000000000000"
-      Description: "IR Temperature Service"
-      Address: "0xAA00"
-       # In channels we list the available single sources of data
-      Channels:
-       # Data is the human readable name
-           Data:      
+      Temperature: 
+        Id: "f000aa00-0451-4000-b000-000000000000"
+        Address: "0xAA00"
+        Description: "IR Temperature Service"
+        # In channels we list the available single sources of data
+        Channels:
+          Temperature:
             Id: "f000aa01-0451-4000-b000-000000000000"
             Address: 0xAA01
             Description: "IR Temperature Data"
             # Type describes what kind of op supported
-            # (R)ead, (W)rite, (S)ubscribe
+              # (R)ead, (W)rite, (S)ubscribe
             Type: [R, S]
-            EnableNotification: ON/OFF # ON :01:00, OFF:00:00 as specification
-           Configure:
+            # Specific configurations, readable by the Protocol implementation
+            Read:
+              Return: Number
+            Subscribe:
+              Return: Number
+          Configuration:
             Id: "f000aa02-0451-4000-b000-000000000000"
             Address: 0xAA02
-            Description: "IR Temperature Configuration"
+            Description: "IR Temperature Sensor Configuration"
             Type: [R, W]
-            EnableStream: ON/OFF # 01 to start sensor and measurement, 00 to sleep
-           Read:
-            Return: Number 
-           Subscribe:              #equivalent with read + period
+            Write:
+              Values:
+                On: 01
+                Off: 00
+            Read:
+              Return: Number
+          Period:
             Id: "f000aa03-0451-4000-b000-000000000000"
-            Address: "0xAA03"
+            Address: 0xAA03
+            Description: "IR Temperature Sensor Read Frequency Configuration"
             Type: [R, W]
-            Period:
+            Write:
+              Values:
                 Unit: ms
-                Type: Number 
+                Type: Number
                 Min: 300
                 Default: 1000
-            Return: Number          
+            Read:
+              Return: Number    
+               
+      Accelerometer:
+        Id: "f000aa10-0451-4000-b000-000000000000"
+        Address: "0xAA10"
+        Description: "Accelerometer Service"
+        Channels:
+          Data:
+            Id: "f000aa11-0451-4000-b000-000000000000"
+            Description: "Accelerometer Data"
+            Address: 0xAA11    
+            Type: [R, S]
+            # Specific configurations, readable by the Protocol implementation
+            Read:
+              Return: Number[]  # X, Y,Z coordinate  
+            Subscribe:
+              Return: Number[] # X, Y,Z coordinate 
+          Configuration:
+            Id: "f000aa12-0451-4000-b000-000000000000"
+            Address: 0xAA12
+            Description: "Accelerometer Sensor Configuration"
+            Type: [R, W]
+            Write:
+              Values:
+                 2G: 01
+                 4G: 02
+                 8G: 03
+                 Off: 00
+            Read:
+              Return: Number
+          Period:
+            Id: "f000aa13-0451-4000-b000-000000000000"
+            Address: 0xAA13
+            Description: "Accelerometer Sensor Read Frequency Configuration"
+            Type: [R, W]
+            Write:
+              Values:
+                Unit: ms
+                Type: Number
+                Min: 100
+                Default: 1000
+            Read:
+              Return: Number
+            
+      Humidity:
+        Id: "f000aa20-0451-4000-b000-000000000000"
+        Address: "0xAA20"
+        Description: "Humidity Service"
+        Channels:
+          Data:
+            Id: "f000aa21-0451-4000-b000-000000000000"
+            Description: "Humidity Data"
+            Address: 0xAA21         
+            Type: [R, S]
+            Read:
+              Return: Number 
+            Subscribe:
+              Return: Number
+          Configuration:
+            Id: "f000aa22-0451-4000-b000-000000000000"
+            Address: 0xAA22
+            Description: "Humidity Sensor Configuration"
+            Type: [R, W]
+            Write:
+              Values:
+                 On: 01
+                 Off: 00
+            Read:
+              Return: Number
+          Period:
+            Id: "f000aa23-0451-4000-b000-000000000000"
+            Address: 0xAA23
+            Description: "Humidity Sensor Read Frequency Configuration"
+            Type: [R, W]
+            Write:
+              Values:
+                Unit: ms
+                Type: Number
+                Min: 100
+                Default: 1000
+            Read:
+              Return: Number      
+
+      Magnetometer:
+        Id: "f000aa30-0451-4000-b000-000000000000"
+        Address: "0xAA30"
+        Description: "Magnetometer Service"
+        Channels:
+          Data:
+            Id: "f000aa31-0451-4000-b000-000000000000"
+            Description: "Magnetometer Data"
+            Address: 0xAA31        
+            Type: [R, S]
+            Read:
+              Return: Number 
+            Subscribe:
+              Return: Number
+          Configuration:
+            Id: "f000aa32-0451-4000-b000-000000000000"
+            Address: 0xAA32
+            Description: "Magnetometer Sensor Configuration"
+            Type: [R, W]
+            Write:
+              Values:
+                 On: 01
+                 Off: 00
+            Read:
+              Return: Number
+          Period:
+            Id: "f000aa33-0451-4000-b000-000000000000"
+            Address: 0xAA33
+            Description: "Magnetometer Sensor Read Frequency Configuration"
+            Type: [R, W]
+            Write:
+              Values:
+                Unit: ms
+                Type: Number
+                Min: 100
+                Default: 1000
+            Read:
+              Return: Number
+
+
+
+      
+      ######################################################
+            
+      Pressure:
+        Id: "f000aa40-0451-4000-b000-000000000000"
+        Address: "0xAA40"
+        Description: "Barometer Service"
+        Channels:
+          Data:
+            Id: "f000aa41-0451-4000-b000-000000000000"
+            Description: "Barometer Data"
+            Address: 0xAA41
+            Type: [R, S]
+            
+      Gyroscope:
+        Id: "f000aa50-0451-4000-b000-000000000000"
+        Address: "0xAA50"
+        Description: "Gyroscope Service"
+        Channels:
+          Data:
+            Id: "f000aa51-0451-4000-b000-000000000000"
+            Description: "Gyroscope Data"
+            Address: 0xAA51
+            Type: [R, S]
+            
