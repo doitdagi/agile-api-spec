@@ -58,4 +58,4 @@ Device:
                 Type: Number 
                 Min: 300
                 Default: 1000
-         
+            Return: Number          
