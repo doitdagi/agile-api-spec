@@ -187,7 +187,7 @@
             "Address": 43555,
             "Description": "Humidity Sensor Read Frequency Configuration",
             "Type": [
-              "R",
+              "R", 
               "W"
             ],
             "Write": {
